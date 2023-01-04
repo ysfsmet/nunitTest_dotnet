@@ -73,5 +73,30 @@
             }
             return result;
         }
+
+        public IEnumerable<int> ArrayConverter(IEnumerable<int> input, bool isSumOperation = true)
+        {
+            var result = new List<int>();
+            for (int i = 0; i < input.Count(); i += 2)
+            {
+                var firstItem = input.ElementAt(i);
+                var secondItem = i + 1 < input.Count() ? input.ElementAt(i + 1) : isSumOperation ? 0 : 1;
+                if (isSumOperation)
+                    result.Add(firstItem + secondItem);
+                else
+                    result.Add(firstItem * secondItem);
+            }
+
+            if (result.Count() != 1)
+                return ArrayConverter(result, !isSumOperation);
+
+            return result;
+        }
+
+
+        public int ArrayConversion(IEnumerable<int> input)
+        {
+            return ArrayConverter(input).First();
+        }
     }
 }

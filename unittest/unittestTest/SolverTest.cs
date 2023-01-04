@@ -54,5 +54,13 @@ namespace unittestTest
                 Assert.That(solver.AlternatingSums(new int[] { 15, 35, 30, 25, 10 }, 3), Is.EqualTo(new int[] { 40, 45, 30 }));
             });
         }
+
+        [TestCase(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, ExpectedResult = 186)]
+        [TestCase(new int[] { 1, 2, 3, 4, 5, 6, 7 }, ExpectedResult = 98)]
+        [TestCase(new int[] { -1, -2, 8 }, ExpectedResult = -24)]
+        public int ArrayConversion_GivenAnArray_ReturnResult(IEnumerable<int> array)
+        {
+            return solver.ArrayConversion(array);
+        }
     }
 }
