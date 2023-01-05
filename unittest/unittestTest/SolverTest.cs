@@ -62,5 +62,15 @@ namespace unittestTest
         {
             return solver.ArrayConversion(array);
         }
+
+        [Test]
+        public void ArrayPreviousLess_GivenIntegerArray_ReturnPreviousLessArray()
+        {
+            var given = new int[] { 3, 5, 2, 4, 5 };
+            var result = solver.ArrayPreviousLess(given);
+            Assert.That(result, Is.EqualTo(new int[] { -1, 3, -1, 2, 4 }));
+        }
+
+
     }
 }

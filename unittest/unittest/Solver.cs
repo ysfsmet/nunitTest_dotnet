@@ -1,4 +1,6 @@
-﻿namespace unittest
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace unittest
 {
     public class Solver
     {
@@ -97,6 +99,27 @@
         public int ArrayConversion(IEnumerable<int> input)
         {
             return ArrayConverter(input).First();
+        }
+
+        public int ReturnNearestLess(IEnumerable<int> inputs, int target)
+        {
+            var biggest = -1;
+            for (int i = 0; i < inputs.Count(); i++)
+            {
+                var item = inputs.ElementAt(i);
+                if (biggest < item && item < target) biggest = item;
+            }
+            return biggest;
+        }
+
+        public IEnumerable<int> ArrayPreviousLess(IEnumerable<int> input)
+        {
+            var result = new List<int>() { -1 };
+            for (int i = 1; i < input.Count(); i++)
+            {
+                result.Add(input.ElementAt(i - 1) < input.ElementAt(i) ? input.ElementAt(i - 1) : -1);
+            }
+            return result;
         }
     }
 }
