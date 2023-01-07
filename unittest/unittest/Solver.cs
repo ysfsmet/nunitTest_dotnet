@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace unittest
 {
@@ -120,6 +121,49 @@ namespace unittest
                 result.Add(input.ElementAt(i - 1) < input.ElementAt(i) ? input.ElementAt(i - 1) : -1);
             }
             return result;
+        }
+
+        private string GetLine(string word, int maxCharCount)
+        {
+            StringBuilder sb = new StringBuilder(maxCharCount);
+            sb.Append('*');
+            for (int i = 0; i < maxCharCount; i++)
+            {
+                if (word.Length > i)
+                    sb.Append(word[i]);
+                else if (word.Length == 0)
+                    sb.Append('*');
+                else
+                    sb.Append(' ');
+            }
+            sb.Append('*');
+            return sb.ToString();
+        }
+
+        public IEnumerable<string> AddBorder(IEnumerable<string> words)
+        {
+            if (words.Count() == 0)
+                throw new ArgumentException("Count can not be zero",nameof(words));
+
+            var results = new List<string>();
+            var maxLength = words.MaxBy(w => w.Length)?.Length ?? 0; // with first and last * assign
+            // Top Line
+            results.Add(GetLine(string.Empty, maxLength));
+            for (int i = 0; i < words.Count(); i++)
+            {
+                results.Add(GetLine(words.ElementAt(i), maxLength));
+            }
+            // Bottom Line
+            results.Add(GetLine(string.Empty, maxLength));
+            return results;
+        }
+
+        public void PrintBorderedWords(IEnumerable<string> lines)
+        {
+            foreach (var line in lines)
+            {
+                Console.WriteLine(line);
+            }
         }
     }
 }

@@ -71,6 +71,22 @@ namespace unittestTest
             Assert.That(result, Is.EqualTo(new int[] { -1, 3, -1, 2, 4 }));
         }
 
-
+        [Test]
+        public void AddBorder_GivenSameLengthWords_OutputSquareGraphic()
+        {
+            var picture = new string[] { "abc", "def" };
+            var lines = solver.AddBorder(picture);
+            Assert.That(lines.All(l => l.Length == 5), Is.True);
+            Assert.Throws(typeof(ArgumentException), () => { 
+                solver.AddBorder(new string[0]); 
+            });
+            Assert.Throws(typeof(ArgumentNullException), () =>
+            {
+                solver.AddBorder(null);
+            });
+            //solver.PrintBorderedWords(
+            //    solver.AddBorder(
+            //        picture.Append("Yusuf Samet Demirci")));
+        }
     }
 }
