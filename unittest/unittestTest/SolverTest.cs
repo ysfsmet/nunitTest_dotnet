@@ -77,8 +77,9 @@ namespace unittestTest
             var picture = new string[] { "abc", "def" };
             var lines = solver.AddBorder(picture);
             Assert.That(lines.All(l => l.Length == 5), Is.True);
-            Assert.Throws(typeof(ArgumentException), () => { 
-                solver.AddBorder(new string[0]); 
+            Assert.Throws(typeof(ArgumentException), () =>
+            {
+                solver.AddBorder(new string[0]);
             });
             Assert.Throws(typeof(ArgumentNullException), () =>
             {
@@ -87,6 +88,47 @@ namespace unittestTest
             //solver.PrintBorderedWords(
             //    solver.AddBorder(
             //        picture.Append("Yusuf Samet Demirci")));
+        }
+
+        [Test]
+        public void AvoidObstacles_GivenIntCoords_ResultJumpSize()
+        {
+            Assert.That(solver.AvoidObstacles(new int[] { 5, 3, 6, 7, 9 }), Is.EqualTo(4));
+        }
+
+        [Test]
+        [TestCase("a1", "c3")]
+        [TestCase("a1", "d4")]
+        [TestCase("2b", "7e")]
+        public void BishopAndPawn_GivenDiagonalCoords_ResultTrue(string bishop, string pawn)
+        {
+            Assert.True(solver.BishopAndPawn(Solver.ChessLocation.Create(bishop), Solver.ChessLocation.Create(pawn)));
+        }
+
+        [Test]
+        [TestCase("a1", "c2")]
+        [TestCase("a2", "d4")]
+        [TestCase("2b", "7e")]
+        public void BishopAndPawn_GivenNonDiagonalCoords_ResultFalse(string bishop, string pawn)
+        {
+            Assert.False(solver.BishopAndPawn(Solver.ChessLocation.Create(bishop), Solver.ChessLocation.Create(pawn)));
+        }
+
+        [Test]
+        [TestCase("a11", "c3")]
+        [TestCase("a1", "z5")]
+        public void BishopAndPawn_GivenWrongCoords_ThrowsArgumentException(string bishop, string pawn)
+        {
+            Assert.Throws(typeof(ArgumentException),
+                () => { solver.BishopAndPawn(Solver.ChessLocation.Create(bishop), Solver.ChessLocation.Create(pawn)); });
+        }
+
+        [Test]
+        [TestCase("aa", "22")]
+        public void BishopAndPawn_GivenWrongCoords_ThrowsFormatException(string bishop, string pawn)
+        {
+            Assert.Throws(typeof(FormatException),
+                () => { solver.BishopAndPawn(Solver.ChessLocation.Create(bishop), Solver.ChessLocation.Create(pawn)); });
         }
     }
 }

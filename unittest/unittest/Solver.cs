@@ -143,7 +143,7 @@ namespace unittest
         public IEnumerable<string> AddBorder(IEnumerable<string> words)
         {
             if (words.Count() == 0)
-                throw new ArgumentException("Count can not be zero",nameof(words));
+                throw new ArgumentException("Count can not be zero", nameof(words));
 
             var results = new List<string>();
             var maxLength = words.MaxBy(w => w.Length)?.Length ?? 0; // with first and last * assign
@@ -164,6 +164,74 @@ namespace unittest
             {
                 Console.WriteLine(line);
             }
+        }
+
+        public int AvoidObstacles(IEnumerable<int> coords)
+        {
+            int stepSize = 1;
+            if (coords.Count() == 0)
+                return stepSize;
+
+            while (true)
+            {
+                Console.WriteLine($"iteration {stepSize}");
+                if (!coords.Any(coord => coord % stepSize == 0))
+                    return stepSize;
+                stepSize++;
+            }
+        }
+
+        public struct ChessLocation
+        {
+            readonly byte row;
+            readonly char column;
+
+            public ChessLocation()
+            {
+                row = 0;
+                column = 'A';
+            }
+
+            public ChessLocation(char column, byte row)
+            {
+                if (row < 1 || row > 8)
+                    throw new ArgumentException("Row value must be between 1 and 8", nameof(row));
+                if (!char.IsLetter(column))
+                    throw new ArgumentException("Column value must be a letter", nameof(column));
+                if (column - 'A' >= 7)
+                    throw new ArgumentException("Column value must be between A and H", nameof(column));
+                this.row = row;
+                this.column = char.ToUpper(column);
+            }
+
+            private int[] GetAsCoordinat()
+            {
+                return new int[] { row - 1, column - 'A' };
+            }
+
+            public bool IsOnDiagonal(ChessLocation a)
+            {
+                var aCoords = GetAsCoordinat();
+                var bCoords = a.GetAsCoordinat();
+                return Math.Abs(aCoords[0] - bCoords[0]) == Math.Abs(aCoords[1] - bCoords[1]);
+            }
+
+            public static ChessLocation Create(string location)
+            {
+                if (location.Length != 2)
+                    throw new ArgumentException("Parameter length must be 2", nameof(location));
+
+                if (char.IsLetter(location[0]) && char.IsNumber(location[1]))
+                    return new ChessLocation(location[0], byte.Parse(location[1].ToString()));
+                else
+                    return new ChessLocation(location[1], byte.Parse(location[0].ToString()));
+
+            }
+        }
+
+        public bool BishopAndPawn(ChessLocation bishop, ChessLocation pawn)
+        {
+            return pawn.IsOnDiagonal(bishop);
         }
     }
 }
